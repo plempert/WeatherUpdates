@@ -4,21 +4,18 @@ import requests
 import time, threading
 import json
 import datetime
+import os
 
 #app = Flask(__name__)
 
-account = "ACd4e53d3c72727960af4662c7287cad81"
-token = "140b4b3e138435fc5f9a3e42813ca04d"
-client = TwilioRestClient(account, token)
-
-weather_appid = "974ce2a8cf6bea4597328de4f1c93d96"
+client = TwilioRestClient(os.environ['twilio_account'], os.environ['twilio_token'])
 
 def periodic():
     print(time.ctime())
     
     #message = client.messages.create(to="+13476333706", from_="+12014925109", body="BODY")
     #payload = {'key1': 'value1', 'key2': 'value2'}
-    payload = {'q' : 'New York City', 'mode' : 'json', 'appid' : '974ce2a8cf6bea4597328de4f1c93d96'}
+    payload = {'q' : 'New York City', 'mode' : 'json', 'appid' : os.environ['weather_appid']}
     r = requests.get('http://api.openweathermap.org/data/2.5/forecast', params=payload)
     data = json.loads(r.text)
     forecast = data['list']
